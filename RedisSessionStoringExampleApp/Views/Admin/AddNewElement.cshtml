@@ -1,0 +1,21 @@
+﻿@using RedisSessionStoringExampleApp.Models.ViewModels
+@model NewElementCred
+
+<form asp-controller="Admin" asp-action="AddNewElement" method="post">
+    @Html.AntiForgeryToken()
+    <table>
+        <tr>
+            <td><p>Введите свой Key:</p></td>
+            <td><input type="text" name="Key" /> </td>
+        </tr>
+        <tr>
+            <td><p>Введите Value:</p></td>
+            <td><input type="text" name="Value" /> </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Отправить" /> </td>
+            <td></td>
+        </tr>
+    </table>
+</form>
+

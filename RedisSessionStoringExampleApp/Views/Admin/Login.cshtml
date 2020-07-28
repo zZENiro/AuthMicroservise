@@ -1,0 +1,20 @@
+﻿@using RedisSessionStoringExampleApp.Models.ViewModels
+@model NewUserCred
+
+    <form asp-controller="Admin" asp-action="Login" method="post">
+        @Html.AntiForgeryToken()
+        <table>
+            <tr>
+                <td><p>Введите свой login:</p></td>
+                <td><input type="text" name="Login" /> </td>
+            </tr>
+            <tr>
+                <td><p>Введите pwd:</p></td>
+                <td><input type="text" name="Password" /> </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Отправить" /> </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
