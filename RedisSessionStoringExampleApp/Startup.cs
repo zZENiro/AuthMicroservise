@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AuthenticationApp;
 
 namespace RedisSessionStoringExampleApp
 {
@@ -19,18 +20,20 @@ namespace RedisSessionStoringExampleApp
         {
             services.AddMvc();
 
-            //services.AddDistributedRedisCache(config =>
-            //{
-                //config.Configuration = "localhost";
-            //});
+            //services.AddSingleton<Authentication.AuthenticationManager, ClaimsAuthenticationManager>();
 
-            //services.AddSession(config =>
-            //{
-            //    config.Cookie.HttpOnly = false;
-            //    config.Cookie.SameSite = SameSiteMode.Lax;
-            //    config.Cookie.Name = "zZen.Cookies";
-            //    config.IdleTimeout = TimeSpan.FromSeconds(120);
-            //});
+            services.AddDistributedRedisCache(config =>
+            {
+                config.Configuration = "localhost";
+            });
+
+            services.AddSession(config =>
+            {
+                config.Cookie.HttpOnly = false;
+                config.Cookie.SameSite = SameSiteMode.Lax;
+                config.Cookie.Name = "zZen.Cookies";
+                config.IdleTimeout = TimeSpan.FromSeconds(120);
+            });
 
             // add refresh token
 

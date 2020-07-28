@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "UVCa4uxOn634F5ew8pmuXTKql0GeZQWJQo+shUSESJwNypyNVlMt8OMW9AML18Ni9jiMIbxAq7xWuR1iGZHitw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\RedisSessionStoringExampleApp\\Authentication\\AuthenticationApp\\AuthenticationApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\zZEN\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

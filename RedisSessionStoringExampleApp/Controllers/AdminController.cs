@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using RedisSessionStoringExampleApp.Authentication;
 
 namespace RedisSessionStoringExampleApp.Controllers
 {
@@ -20,6 +21,7 @@ namespace RedisSessionStoringExampleApp.Controllers
     public class AdminController : Controller
     {
         private readonly IDistributedCache _cache;
+        private readonly AuthenticationManager _authManager;
         private static int _count = 0;
         private static List<User> Users = new List<User>()
         {
@@ -30,9 +32,10 @@ namespace RedisSessionStoringExampleApp.Controllers
             new User() { Login = "login5", Password = "pwd5" },
         };
 
-        public AdminController(/*IDistributedCache cache*/)
+        public AdminController(IDistributedCache cache, AuthenticationManager authManager)
         {
-            //this._cache = cache;
+            this._cache = cache;
+            this._authManager = authManager;
         }
 
         [HttpGet]
@@ -87,7 +90,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             if (user is null)
                 return NotFound($"User {newUserCred.Login} not found");
 
-            Auth(newUserCred);
+            _authManager.Authenticate(newUserCred, HttpContext);
 
             return RedirectToAction("Index");
         }
@@ -99,26 +102,6 @@ namespace RedisSessionStoringExampleApp.Controllers
             HttpContext.SignOutAsync();
 
             return Ok("You're logout");
-        }
-
-        private void Auth(NewUserCred newUserCred)
-        {
-            var usrClaims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Role, "admin"),
-                new Claim(ClaimTypes.NameIdentifier, newUserCred.Login),
-                new Claim("pwd", newUserCred.Password)
-            };
-
-            var usrIdentity = new ClaimsIdentity(
-                usrClaims, 
-                "zZen.AuthCookies", 
-                ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-
-            var usrPrincipal = new ClaimsPrincipal(usrIdentity);
-
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, usrPrincipal);
         }
     }
 }

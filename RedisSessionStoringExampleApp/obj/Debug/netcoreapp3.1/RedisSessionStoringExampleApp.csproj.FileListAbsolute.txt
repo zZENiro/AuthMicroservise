@@ -15,8 +15,6 @@ C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExample
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.pdb
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Redis.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\StackExchange.Redis.StrongName.dll
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.csproj.CoreCompileInputs.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.csproj.CopyComplete
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.pdb
