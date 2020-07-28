@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RedisSessionStoringExampleApp.Models.ViewModels
+namespace ModelsApp.Models.ViewModels
 {
     public class NewElementCred
     {

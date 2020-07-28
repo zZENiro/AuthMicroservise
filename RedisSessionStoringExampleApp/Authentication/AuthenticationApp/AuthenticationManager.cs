@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using RedisSessionStoringExampleApp.Models.ViewModels;
+using ModelsApp.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,7 +14,7 @@ namespace AuthenticationApp
 {
     public abstract class AuthenticationManager
     {
-        public abstract Task<IAuthenticationResponse> Authenticate(NewUserCred userCredentionals, HttpContext httpContext);
+        public abstract Task<IAuthenticationResponse> Authenticate(NewUserCred userCredentionals, HttpContext httpContext); //
 
         public virtual IDictionary<string, string> UsersRefreshTokens { get; set; }
 

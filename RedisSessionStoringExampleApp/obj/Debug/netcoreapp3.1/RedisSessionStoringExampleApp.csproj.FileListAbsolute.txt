@@ -30,3 +30,5 @@ C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExample
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Login.cshtml.g.cs
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.RazorTargetAssemblyInfo.cs
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.Views.pdb
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.csproj.CoreCompileInputs.cache
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\obj\Debug\netcoreapp3.1\RedisSessionStoringExampleApp.MvcApplicationPartsAssemblyInfo.cache

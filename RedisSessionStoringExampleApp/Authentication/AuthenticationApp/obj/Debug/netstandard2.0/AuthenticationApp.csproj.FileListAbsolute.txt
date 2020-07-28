@@ -1,4 +1,0 @@
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\Authentication\AuthenticationApp\obj\Debug\netstandard2.0\AuthenticationApp.csprojAssemblyReference.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\Authentication\AuthenticationApp\obj\Debug\netstandard2.0\AuthenticationApp.AssemblyInfoInputs.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\Authentication\AuthenticationApp\obj\Debug\netstandard2.0\AuthenticationApp.AssemblyInfo.cs
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\Authentication\AuthenticationApp\obj\Debug\netstandard2.0\AuthenticationApp.csproj.CoreCompileInputs.cache

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RedisSessionStoringExampleApp.Models
+namespace ModelsApp.Models.ViewModels
 {
-    public class User
+    public class NewUserCred
     {
         public string Login { get; set; }
 
