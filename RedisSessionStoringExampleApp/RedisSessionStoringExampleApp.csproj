@@ -19,4 +19,10 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthenticationApp\AuthenticationApp.csproj" />
+    <ProjectReference Include="..\ModelsApp\ModelsApp.csproj" />
+    <ProjectReference Include="..\RepositoriesApp\RepositoriesApp.csproj" />
+  </ItemGroup>
+
 </Project>
