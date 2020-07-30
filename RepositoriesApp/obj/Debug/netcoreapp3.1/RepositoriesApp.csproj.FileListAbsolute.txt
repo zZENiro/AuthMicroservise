@@ -1,0 +1,8 @@
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\bin\Debug\netcoreapp3.1\RepositoriesApp.deps.json
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\bin\Debug\netcoreapp3.1\RepositoriesApp.dll
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\obj\Debug\netcoreapp3.1\RepositoriesApp.csprojAssemblyReference.cache
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\obj\Debug\netcoreapp3.1\RepositoriesApp.AssemblyInfoInputs.cache
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\obj\Debug\netcoreapp3.1\RepositoriesApp.AssemblyInfo.cs
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\bin\Debug\netcoreapp3.1\RepositoriesApp.runtimeconfig.json
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\bin\Debug\netcoreapp3.1\RepositoriesApp.runtimeconfig.dev.json
+C:\Users\zZEN\source\repos\RedisSessionStoringExample\RepositoriesApp\obj\Debug\netcoreapp3.1\RepositoriesApp.genruntimeconfig.cache

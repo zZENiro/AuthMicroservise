@@ -35,6 +35,7 @@ namespace RedisSessionStoringExampleApp
 
             // add refresh token
 
+
             services.AddAntiforgery(config =>
             {
                 config.Cookie.Name = "zZen.AntiforgeryCookies";
