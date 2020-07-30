@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
-using ModelsApp.Models.ViewModels;
-using RepositoryApplication;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,24 +11,27 @@ using System.Threading.Tasks;
 namespace AuthenticationApp.Jwt
 {
     public class JwtAuthenticationManager : AuthenticationManager
-    {   
-        public JwtAuthenticationManager(string tokenKey, IRefreshTokenGenerator refreshTokenGenerator, IUsersRepository usersRepository)
-            : base(tokenKey, refreshTokenGenerator, usersRepository) { }
+    {
+        private readonly AuthenticationOptions _authOptions;
 
-        public override async Task<IAuthenticationResponse> Authenticate(NewUserCred userCredentionals, HttpContext httpContext = null)
+        private JwtAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator)
+            : base(refreshTokenGenerator) { }
+
+        public JwtAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator, AuthenticationOptions options)
+            : this(refreshTokenGenerator)
         {
-            var users = (await _usersRepo.GetAllAsync()).ToList();
+            _authOptions = options;
+        }
 
-            if (!users.Any(u => u.Login == userCredentionals.Login && u.Password == userCredentionals.Password))
-                return null;
-
-            var jwtToken = GenerateJwtTokenString(userCredentionals.Login, DateTime.UtcNow);
+        public override async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext = null)
+        {
+            var jwtToken = GenerateJwtTokenString(identifications);
             var refreshToken = _refreshTokenGenerator.GenerateRefreshToken();
 
-            if (UsersRefreshTokens.ContainsKey(userCredentionals.Login))
-                UsersRefreshTokens[userCredentionals.Login] = refreshToken;
+            if (UsersRefreshTokens.ContainsKey(identifications.Login))
+                UsersRefreshTokens[identifications.Login] = refreshToken;
             else
-                UsersRefreshTokens.Add(userCredentionals.Login, refreshToken);
+                UsersRefreshTokens.Add(identifications.Login, refreshToken);
 
             return new JwtAuthenticationResponse()
             {
@@ -39,38 +40,21 @@ namespace AuthenticationApp.Jwt
             };
         }
 
-        public override async Task<IAuthenticationResponse> Authenticate(NewUserCred userCredentionals, Claim[] claims, HttpContext httpContext = null)
+        private string GenerateJwtTokenString(IIdentifications identifications)
         {
-            var token = GenerateJwtTokenString(userCredentionals.Login, DateTime.UtcNow, claims);
-            var refreshToken = _refreshTokenGenerator.GenerateRefreshToken();
+            var identity = new IdentityManager().GetIdentity(identifications);
 
-            if (UsersRefreshTokens.ContainsKey(userCredentionals.Login))
-                UsersRefreshTokens[userCredentionals.Login] = refreshToken;
-            else
-                UsersRefreshTokens.Add(userCredentionals.Login, refreshToken);
+            var securityToken = new JwtSecurityToken(
+                issuer: _authOptions.Issuer,
+                audience: _authOptions.Audience,
+                claims: identity.Claims,
+                notBefore: DateTime.Now,
+                expires: DateTime.Now.AddMinutes(_authOptions.Lifetime),
+                signingCredentials: new SigningCredentials(
+                    key: null,
+                    algorithm: SecurityAlgorithms.HmacSha256));
 
-            return new JwtAuthenticationResponse
-            {
-                JwtToken = token,
-                RefreshToken = refreshToken
-            };
-        }
-
-        private string GenerateJwtTokenString(string username, DateTime expires, Claim[] claims = null)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_tokenKey);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims ?? new Claim[] { new Claim(ClaimTypes.Name, username) }),
-                Expires = expires.AddMinutes(2),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
     }
 }

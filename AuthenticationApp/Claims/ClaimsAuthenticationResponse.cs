@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace AuthenticationApp
+namespace AuthenticationApp.Claims
 {
     public class ClaimsAuthenticationResponse : IAuthenticationResponse, IEnumerable<Claim>
     {

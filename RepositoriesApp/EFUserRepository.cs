@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ModelsApp.Models;
+using RepositoriesApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RepositoryApplication
 {
-    public class EFUserRepository : IUsersRepository
+    public class EFUserRepository : IRepository<User>
     {
         private readonly UserDbContext _context;
 
