@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationApp", "RedisS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelsApp", "RedisSessionStoringExampleApp\Models\ModelsApp\ModelsApp.csproj", "{54E8BA05-D8A6-4D07-9B31-CE3796ED153F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryApplication", "RedisSessionStoringExampleApp\Data\RepositoryApplication\RepositoryApplication.csproj", "{E801DF83-10EC-41A9-8142-3075FB35E792}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{54E8BA05-D8A6-4D07-9B31-CE3796ED153F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54E8BA05-D8A6-4D07-9B31-CE3796ED153F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54E8BA05-D8A6-4D07-9B31-CE3796ED153F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E801DF83-10EC-41A9-8142-3075FB35E792}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E801DF83-10EC-41A9-8142-3075FB35E792}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E801DF83-10EC-41A9-8142-3075FB35E792}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E801DF83-10EC-41A9-8142-3075FB35E792}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

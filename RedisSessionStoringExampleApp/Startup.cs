@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+
 namespace RedisSessionStoringExampleApp
 {
     public class Startup
@@ -18,8 +19,6 @@ namespace RedisSessionStoringExampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-            //services.AddSingleton<Authentication.AuthenticationManager, ClaimsAuthenticationManager>();
 
             services.AddDistributedRedisCache(config =>
             {
