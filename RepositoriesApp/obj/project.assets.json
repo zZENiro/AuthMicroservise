@@ -2298,16 +2298,6 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlSerializer.dll": {}
         }
-      },
-      "ModelsApp/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v3.1",
-        "compile": {
-          "bin/placeholder/ModelsApp.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/ModelsApp.dll": {}
-        }
       }
     }
   },
@@ -7749,11 +7739,6 @@
         "system.xml.xmlserializer.4.3.0.nupkg.sha512",
         "system.xml.xmlserializer.nuspec"
       ]
-    },
-    "ModelsApp/1.0.0": {
-      "type": "project",
-      "path": "../ModelsApp/ModelsApp.csproj",
-      "msbuildProject": "../ModelsApp/ModelsApp.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -7763,7 +7748,6 @@
       "Microsoft.EntityFrameworkCore.Design >= 3.1.6",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.6",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.6",
-      "ModelsApp >= 1.0.0",
       "MongoDB.Bson >= 2.10.4",
       "MongoDB.Driver >= 2.10.4",
       "MongoDB.Driver.Core >= 2.10.4"
@@ -7799,11 +7783,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {
-            "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\ModelsApp\\ModelsApp.csproj": {
-              "projectPath": "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\ModelsApp\\ModelsApp.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

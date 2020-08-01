@@ -1,9 +1,0 @@
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\bin\Debug\netcoreapp3.1\ModelsApp.deps.json
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\bin\Debug\netcoreapp3.1\ModelsApp.dll
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\bin\Debug\netcoreapp3.1\ModelsApp.pdb
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.csprojAssemblyReference.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.AssemblyInfoInputs.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.AssemblyInfo.cs
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.csproj.CoreCompileInputs.cache
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.dll
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\ModelsApp\obj\Debug\netcoreapp3.1\ModelsApp.pdb

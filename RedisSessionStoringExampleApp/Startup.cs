@@ -3,24 +3,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AuthenticationApp;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using RepositoriesApp;
 
 namespace RedisSessionStoringExampleApp
 {
     public class Startup
     {
+        private AuthenticationOptions _authenticationOptions;
+
+        public Startup()
+        {
+            _authenticationOptions = new AuthenticationOptions()
+            { 
+            };
+
+
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            //services.AddDbContext<UserDbContext>(options => 
+            //    options.UseSqlServer(""));
 
+            //services.AddSingleton<IRepository<User>>(x => 
+            //    new EFUserRepository(x.GetService<UserDbContext>)));
 
             services.AddDistributedRedisCache(config =>
             {
