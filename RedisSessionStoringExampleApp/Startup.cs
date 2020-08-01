@@ -20,6 +20,8 @@ namespace RedisSessionStoringExampleApp
         {
             services.AddMvc();
 
+
+
             services.AddDistributedRedisCache(config =>
             {
                 config.Configuration = "localhost";
@@ -32,9 +34,6 @@ namespace RedisSessionStoringExampleApp
                 config.Cookie.Name = "zZen.Cookies";
                 config.IdleTimeout = TimeSpan.FromSeconds(120);
             });
-
-            // add refresh token
-
 
             services.AddAntiforgery(config =>
             {

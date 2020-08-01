@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AuthenticationApp\AuthenticationApp.csproj" />
-    <ProjectReference Include="..\ModelsApp\ModelsApp.csproj" />
     <ProjectReference Include="..\RepositoriesApp\RepositoriesApp.csproj" />
   </ItemGroup>
 

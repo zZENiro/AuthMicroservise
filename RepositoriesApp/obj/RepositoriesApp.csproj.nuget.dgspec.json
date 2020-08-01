@@ -125,6 +125,18 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[3.1.6, )"
+            },
+            "MongoDB.Bson": {
+              "target": "Package",
+              "version": "[2.10.4, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.10.4, )"
+            },
+            "MongoDB.Driver.Core": {
+              "target": "Package",
+              "version": "[2.10.4, )"
             }
           },
           "imports": [
