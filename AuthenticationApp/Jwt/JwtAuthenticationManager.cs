@@ -10,23 +10,24 @@ using System.Threading.Tasks;
 
 namespace AuthenticationApp.Jwt
 {
-    public class JwtAuthenticationManager : AuthenticationManager
+    public class JwtAuthenticationManager : IAuthenticationManager
     {
         private readonly AuthenticationOptions _authOptions;
+        private readonly IRefreshTokenGenerator _refreshTokenGenerator;
 
-        private JwtAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator)
-            : base(refreshTokenGenerator) { }
+        public IDictionary<string, string> UsersRefreshTokens { get; set; }
 
         public JwtAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator, AuthenticationOptions options)
-            : this(refreshTokenGenerator)
         {
             _authOptions = options;
+            _refreshTokenGenerator = refreshTokenGenerator;
+            UsersRefreshTokens = new Dictionary<string, string>();
         }
 
-        public override async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext = null)
+        public async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext = null)
         {
             var jwtToken = GenerateJwtTokenString(identifications);
-            var refreshToken = _refreshTokenGenerator.GenerateRefreshToken();
+            var refreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
 
             if (UsersRefreshTokens.ContainsKey(identifications.Login))
                 UsersRefreshTokens[identifications.Login] = refreshToken;
@@ -51,7 +52,7 @@ namespace AuthenticationApp.Jwt
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddMinutes(_authOptions.Lifetime),
                 signingCredentials: new SigningCredentials(
-                    key: null,
+                    key: _authOptions.GetSymmetricSecurityKey(),
                     algorithm: SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(securityToken);

@@ -9,14 +9,20 @@ using System.Threading.Tasks;
 
 namespace AuthenticationApp.Claims
 {
-    public class ClaimsAuthenticationManager : AuthenticationManager
+    public class ClaimsAuthenticationManager : IAuthenticationManager
     {
-        public ClaimsAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator)
-            : base(refreshTokenGenerator) { }
+        IRefreshTokenGenerator _refreshTokenGenerator;
 
-        public override async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext)
+        public IDictionary<string, string> UsersRefreshTokens { get; set; }
+        
+        public ClaimsAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator)
         {
-            var refreshToken = _refreshTokenGenerator.GenerateRefreshToken();
+            _refreshTokenGenerator = refreshTokenGenerator;
+        }
+
+        public async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext)
+        {
+            var refreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
 
             var usrClaims = new List<Claim>()
             {

@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 
 namespace AuthenticationApp.Jwt
 {
-    public class RefreshTokenGenerator : IRefreshTokenGenerator
+    public class JwtRefreshTokenGenerator : IRefreshTokenGenerator
     {
-        public string GenerateRefreshToken()
+        public string GenerateRefreshTokenString()
         {
             var randomNumber = new byte[32];
             using (var randomNumberGenerator = RandomNumberGenerator.Create())

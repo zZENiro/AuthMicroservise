@@ -6,6 +6,6 @@ namespace AuthenticationApp
 {
     public interface IRefreshTokenGenerator
     {
-        string GenerateRefreshToken();
+        string GenerateRefreshTokenString();
     }
 }

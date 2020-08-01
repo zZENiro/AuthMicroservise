@@ -34,7 +34,7 @@ namespace AuthenticationApp.Jwt
                 new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_authenticationOptions.Key)),
+                    IssuerSigningKey = _authenticationOptions.GetSymmetricSecurityKey(),
                     ValidateIssuer = false,
                     ValidIssuer = _authenticationOptions.Issuer,
                     ValidateAudience = false,
