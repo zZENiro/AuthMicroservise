@@ -14,10 +14,8 @@ namespace AuthenticationApp.Jwt
             {
                 var jwtToken = context.Request.Cookies["zZen.App.Token"];
                 var refreshToken = context.Request.Cookies["zZen.App.RefreshToken"];
-
-                if (string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
-                    context.Response.Redirect("/Admin/UpdateToken");
-                else if (!string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
+               
+                if (!string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
                     context.Request.Headers.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
 
                 await next.Invoke();

@@ -68,8 +68,8 @@ namespace RedisSessionStoringExampleApp
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("defaultConn")));
 
-            services.AddSingleton<IRepository<User>>(impl =>
-                new EFUserRepository(impl.GetService<UserDbContext>()));
+            //services.AddSingleton<IRepository<User>>(impl =>
+            //    new EFUserRepository(impl.GetService<UserDbContext>()));
 
             services.AddDistributedRedisCache(config =>
             {
@@ -95,8 +95,6 @@ namespace RedisSessionStoringExampleApp
                 config.SuppressXFrameOptionsHeader = false;
             });
 
-            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters);
-
             services.AddAuthentication(config =>
             {
                 config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -107,6 +105,7 @@ namespace RedisSessionStoringExampleApp
                 {
                     cookieConfig.LoginPath = "/Admin/Login";
                     cookieConfig.LogoutPath = "/Admin/Logout";
+                    cookieConfig.AccessDeniedPath = "/Admin/Login";
                     cookieConfig.Cookie.HttpOnly = true;
                     cookieConfig.Cookie.SameSite = SameSiteMode.Strict;
                 })
@@ -127,13 +126,17 @@ namespace RedisSessionStoringExampleApp
                 });
             });
 
+            services.AddSingleton(typeof(AuthenticationOptions), _JwtauthenticationOptions);
+
+            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters);
+            
             services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>();
             
             services.AddSingleton<IAuthenticationManager>(impl =>
                 new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), _JwtauthenticationOptions));
 
             services.AddSingleton<ITokenRefresher>(impl =>
-                new JwtTokenRefresher(_JwtauthenticationOptions, impl.GetService<JwtAuthenticationManager>()));
+                new JwtTokenRefresher(_JwtauthenticationOptions, impl.GetService<IAuthenticationManager>()));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery)

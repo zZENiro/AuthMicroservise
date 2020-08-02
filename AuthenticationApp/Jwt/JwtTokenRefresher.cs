@@ -11,11 +11,11 @@ namespace AuthenticationApp.Jwt
     public class JwtTokenRefresher : ITokenRefresher
     {
         private readonly AuthenticationOptions _authenticationOptions;
-        private readonly JwtAuthenticationManager _JwtAuthenticationManager;
+        private readonly IAuthenticationManager _JwtAuthenticationManager;
 
         public JwtTokenRefresher(
-            AuthenticationOptions authenticationOptions, 
-            JwtAuthenticationManager jWTAuthenticationManager)
+            AuthenticationOptions authenticationOptions,
+            IAuthenticationManager jWTAuthenticationManager)
         {
             _authenticationOptions = authenticationOptions;
             _JwtAuthenticationManager = jWTAuthenticationManager;
@@ -37,7 +37,7 @@ namespace AuthenticationApp.Jwt
             if (!IsValidToken(validatedToken as JwtSecurityToken))
                 throw new SecurityTokenException("Invalid token passed!");
 
-            var loginClaim = principal.Claims.ToList().Where(claim => claim.ValueType == "Login").FirstOrDefault();
+            var loginClaim = principal.Claims.ToList().Where(claim => claim.Type == "Login").FirstOrDefault();
 
             if (jwtRefreshCred.JwtRefreshToken != _JwtAuthenticationManager.UsersRefreshTokens[loginClaim.Value])
                 throw new SecurityTokenException("Invalid token passed!");
