@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ namespace RedisSessionStoringExampleApp
         public IConfiguration Configuration { get; set; }
 
         private AuthenticationOptions _JwtauthenticationOptions;
+        private TokenValidationParameters _tokenValidationParameters;
 
         public Startup(IConfiguration configuration)
         {
@@ -41,11 +43,27 @@ namespace RedisSessionStoringExampleApp
                 Lifetime = 1, // min
                 Key = Configuration.GetValue<string>("SecretKey")
             };
+
+            _tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_JwtauthenticationOptions.Key)),
+                ValidateIssuer = true,
+                ValidIssuer = _JwtauthenticationOptions.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _JwtauthenticationOptions.Audience,
+                ValidateLifetime = true,
+            };
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddCors(setup =>
+                setup.AddPolicy("SecureCors", config => {
+                    config.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
+                }));
 
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("defaultConn")));
@@ -77,6 +95,8 @@ namespace RedisSessionStoringExampleApp
                 config.SuppressXFrameOptionsHeader = false;
             });
 
+            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters);
+
             services.AddAuthentication(config =>
             {
                 config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -95,16 +115,7 @@ namespace RedisSessionStoringExampleApp
                     options.RequireHttpsMetadata = true;
                     options.Audience = _JwtauthenticationOptions.Audience;
                     options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_JwtauthenticationOptions.Key)),
-                        ValidateIssuer = true,
-                        ValidIssuer = _JwtauthenticationOptions.Issuer,
-                        ValidateAudience = true,
-                        ValidAudience = _JwtauthenticationOptions.Audience,
-                        ValidateLifetime = true,
-                    };
+                    options.TokenValidationParameters = _tokenValidationParameters;
                 });
 
             services.AddAuthorization(config =>
@@ -137,6 +148,8 @@ namespace RedisSessionStoringExampleApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("SecureCors");
+
             app.UseAntiforgery(antiforgery);
 
             app.UseJwtAuthentication();

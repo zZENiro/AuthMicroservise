@@ -22,8 +22,8 @@ namespace AuthenticationApp.Jwt
         }
 
         public async Task<IAuthenticationResponse> Refresh(
-            IRefreshCred refreshCred, 
-            IIdentifications identifications) 
+            IRefreshCred refreshCred,
+            TokenValidationParameters tokenValidationParameters) 
         {
             var jwtRefreshCred = refreshCred as JwtRefreshCred;
 
@@ -31,16 +31,7 @@ namespace AuthenticationApp.Jwt
 
             var principal = new JwtSecurityTokenHandler().ValidateToken(
                 jwtRefreshCred.JwtToken,
-                new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = _authenticationOptions.GetSymmetricSecurityKey(),
-                    ValidateIssuer = false,
-                    ValidIssuer = _authenticationOptions.Issuer,
-                    ValidateAudience = false,
-                    ValidAudience = _authenticationOptions.Audience,
-                    ValidateLifetime = true,
-                }, 
+                tokenValidationParameters, 
                 out validatedToken);
 
             if (!IsValidToken(validatedToken as JwtSecurityToken))
@@ -51,7 +42,7 @@ namespace AuthenticationApp.Jwt
             if (jwtRefreshCred.JwtRefreshToken != _JwtAuthenticationManager.UsersRefreshTokens[loginClaim.Value])
                 throw new SecurityTokenException("Invalid token passed!");
 
-            return await _JwtAuthenticationManager.Authenticate(identifications);
+            return await _JwtAuthenticationManager.AuthenticateAsync(principal.Claims.ToList());
         }
 
         private bool IsValidToken(JwtSecurityToken securityToken) => securityToken != null || securityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);

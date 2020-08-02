@@ -17,6 +17,8 @@ namespace AuthenticationApp
     {
         IDictionary<string, string> UsersRefreshTokens { get; set; }
 
-        Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext);
+        Task<IAuthenticationResponse> AuthenticateAsync(IIdentifications identifications);
+
+        Task<IAuthenticationResponse> AuthenticateAsync(IList<Claim> userClaims);
     }
 }

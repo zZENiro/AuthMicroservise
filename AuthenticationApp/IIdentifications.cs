@@ -16,5 +16,7 @@ namespace AuthenticationApp
         string Password { get; set; }
 
         string Email { get; set; }
+
+        string Role { get; set; }
     }
 }

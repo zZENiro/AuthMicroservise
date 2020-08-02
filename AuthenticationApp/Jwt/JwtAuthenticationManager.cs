@@ -24,31 +24,67 @@ namespace AuthenticationApp.Jwt
             UsersRefreshTokens = new Dictionary<string, string>();
         }
 
-        public async Task<IAuthenticationResponse> Authenticate(IIdentifications identifications, HttpContext httpContext = null)
-        {
-            var jwtToken = GenerateJwtTokenString(identifications);
-            var refreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
-
-            if (UsersRefreshTokens.ContainsKey(identifications.Login))
-                UsersRefreshTokens[identifications.Login] = refreshToken;
-            else
-                UsersRefreshTokens.Add(identifications.Login, refreshToken);
-
-            return new JwtAuthenticationResponse()
+        public async Task<IAuthenticationResponse> AuthenticateAsync(IIdentifications identifications) =>
+            await Task.Factory.StartNew(() =>
             {
-                JwtToken = jwtToken,
-                RefreshToken = refreshToken
-            };
+                var jwtToken = GenerateJwtTokenString(identifications);
+                var newRefreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
+
+                UpdateUsersRefreshTokens(identifications.Login, newRefreshToken);
+
+                return new JwtAuthenticationResponse()
+                {
+                    JwtToken = jwtToken,
+                    RefreshToken = newRefreshToken
+                };
+            });
+
+        public async Task<IAuthenticationResponse> AuthenticateAsync(IList<Claim> userClaims) =>
+            await Task.Factory.StartNew(() =>
+            {
+                var jwtToken = GenerateJwtTokenString(userClaims);
+                var newRefreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
+
+                UpdateUsersRefreshTokens(userClaims.Where(claim => claim.Type == "Login").FirstOrDefault().Value, newRefreshToken);
+
+                return new JwtAuthenticationResponse()
+                {
+                    JwtToken = jwtToken,
+                    RefreshToken = newRefreshToken
+                };
+            });
+
+        private void UpdateUsersRefreshTokens(string login, string newRefreshToken)
+        {
+            if (UsersRefreshTokens.ContainsKey(login))
+                UsersRefreshTokens[login] = newRefreshToken;
+            else
+                UsersRefreshTokens.Add(login, newRefreshToken);
         }
 
         private string GenerateJwtTokenString(IIdentifications identifications)
         {
-            var identity = new IdentityManager().GetIdentity(identifications);
+            var identity = IdentityManager.GetIdentity(identifications);
 
             var securityToken = new JwtSecurityToken(
                 issuer: _authOptions.Issuer,
                 audience: _authOptions.Audience,
                 claims: identity.Claims,
+                notBefore: DateTime.Now,
+                expires: DateTime.Now.AddMinutes(_authOptions.Lifetime),
+                signingCredentials: new SigningCredentials(
+                    key: _authOptions.GetSymmetricSecurityKey(),
+                    algorithm: SecurityAlgorithms.HmacSha256));
+
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
+        }
+
+        private string GenerateJwtTokenString(IList<Claim> userClaims)
+        {
+            var securityToken = new JwtSecurityToken(
+                issuer: _authOptions.Issuer,
+                audience: _authOptions.Audience,
+                claims: userClaims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddMinutes(_authOptions.Lifetime),
                 signingCredentials: new SigningCredentials(

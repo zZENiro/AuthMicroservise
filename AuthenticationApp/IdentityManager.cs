@@ -5,15 +5,16 @@ using System.Text;
 
 namespace AuthenticationApp
 {
-    public class IdentityManager
+    public static class IdentityManager
     {
-        public ClaimsIdentity GetIdentity(IIdentifications identifications)
+        public static ClaimsIdentity GetIdentity(IIdentifications identifications)
         {
             var identificationClaims = new List<Claim>()
             {
                 new Claim("Login", identifications.Login),
                 new Claim("Email", identifications.Email),
-                new Claim("Password", identifications.Password)
+                new Claim("Password", identifications.Password),
+                new Claim(ClaimTypes.Role, identifications.Role)
             };
 
             return new ClaimsIdentity(

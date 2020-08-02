@@ -17,10 +17,8 @@ namespace AuthenticationApp.Jwt
 
                 if (string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
                     context.Response.Redirect("/Admin/UpdateToken");
-                else if (string.IsNullOrEmpty(jwtToken) && string.IsNullOrEmpty(refreshToken))
-                    context.Response.Redirect("/Admin/Login");
-
-                context.Request.Headers.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
+                else if (!string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
+                    context.Request.Headers.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
 
                 await next.Invoke();
             });
