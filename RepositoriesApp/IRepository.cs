@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 
 namespace RepositoriesApp
 {
-    public interface IRepository<T>
+    public interface IRepository
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        Task<T> GetOneAsync(string login);
+        Task<T> GetOneAsync<T>(string login);
 
-        Task AddManyAsync(params T[] users);
+        Task AddManyAsync<T>(params T[] users);
 
-        Task AddAsync(T item);
+        Task AddAsync<T>(T item);
 
-        Task EditAsync(T dest, T newOne);
+        Task EditAsync<T>(T dest, T newOne);
     }
 }

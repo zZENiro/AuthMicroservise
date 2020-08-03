@@ -62,7 +62,8 @@ namespace RedisSessionStoringExampleApp
             services.AddMvc();
 
             services.AddCors(setup =>
-                setup.AddPolicy("SecureCors", config => {
+                setup.AddPolicy("SecureCors", config =>
+                {
                     config.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
                 }));
 
@@ -130,9 +131,9 @@ namespace RedisSessionStoringExampleApp
             services.AddSingleton(typeof(AuthenticationOptions), _JwtauthenticationOptions);
 
             services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters);
-            
+
             services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>();
-            
+
             services.AddSingleton<IAuthenticationManager>(impl =>
                 new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), _JwtauthenticationOptions, impl.GetService<IDistributedCache>()));
 
@@ -157,6 +158,16 @@ namespace RedisSessionStoringExampleApp
             app.UseAntiforgery(antiforgery);
 
             app.UseJwtAuthentication();
+            
+            app.UseStatusCodePages(async context =>
+            {
+                var request = context.HttpContext.Request;
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+                    response.Redirect("/Admin/Login");
+            });
+
             app.UseAuthentication();
             app.UseAuthorization();
 

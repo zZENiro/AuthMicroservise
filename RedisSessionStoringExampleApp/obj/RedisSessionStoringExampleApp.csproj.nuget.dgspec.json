@@ -42,10 +42,6 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
-            "Microsoft.AspNetCore.Authentication.Cookies": {
-              "target": "Package",
-              "version": "[2.2.0, )"
-            },
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -53,6 +49,10 @@
             "Microsoft.Extensions.Caching.Abstractions": {
               "target": "Package",
               "version": "[3.1.6, )"
+            },
+            "Microsoft.Net.Http.Headers": {
+              "target": "Package",
+              "version": "[2.2.8, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
