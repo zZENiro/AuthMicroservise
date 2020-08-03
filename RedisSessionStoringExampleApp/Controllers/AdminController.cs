@@ -103,7 +103,7 @@ namespace RedisSessionStoringExampleApp.Controllers
         public async Task<IActionResult> Login(User user)
         {
             var requireUser = await _repository.GetOneAsync(user.Login);
-            if (requireUser is null)
+                if (requireUser is null)
                 return Unauthorized();
 
             var resp = (JwtAuthenticationResponse)await _authentication.AuthenticateAsync(user);
@@ -129,7 +129,6 @@ namespace RedisSessionStoringExampleApp.Controllers
 
             return RedirectToAction("Index");
         }
-
 
         private void UpdateCachedTokens(JwtAuthenticationResponse response, string oldRefreshToken)
         {

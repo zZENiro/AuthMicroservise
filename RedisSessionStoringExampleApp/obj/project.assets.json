@@ -2313,6 +2313,7 @@
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
           "Microsoft.Extensions.Caching.Abstractions": "3.1.6",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "3.1.6",
           "Microsoft.Net.Http.Headers": "2.2.8",
           "System.IdentityModel.Tokens.Jwt": "6.7.1"
         },

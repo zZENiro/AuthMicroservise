@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[3.1.6, )"
             },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[3.1.6, )"
+            },
             "Microsoft.Net.Http.Headers": {
               "target": "Package",
               "version": "[2.2.8, )"

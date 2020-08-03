@@ -75,13 +75,13 @@ namespace RedisSessionStoringExampleApp
                     config.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
                 }));
 
-            services.AddSingleton<IUsersRepository>(impl =>
-                new EFUserRepository(_dbContext));
+            services.AddEFUsersRepository(_dbContext);
 
             services.AddDistributedRedisCache(config =>
             {
                 config.Configuration = "localhost";
             });
+            services.AddDistributedCacheEntryOptions(_distributedCacheEntryOptions);
 
             services.AddSession(config =>
             {
@@ -133,22 +133,15 @@ namespace RedisSessionStoringExampleApp
                 });
             });
 
-            services.AddSingleton(typeof(DistributedCacheEntryOptions), _distributedCacheEntryOptions); // cache setts
+            services.AddAuthenticationOptions(_JwtauthenticationOptions);
 
-            services.AddSingleton(typeof(AuthenticationOptions), _JwtauthenticationOptions); // jwt auth setts
+            services.AddTokenValidation(_tokenValidationParameters);
 
-            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters); // jwt token validation setts
+            services.AddJwtRefreshTokenGenerator();
 
-            services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>(); // jwt token
+            services.AddJwtAuthenticationManager(_JwtauthenticationOptions, _distributedCacheEntryOptions);
 
-            services.AddSingleton<IAuthenticationManager>(impl => //
-                new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), 
-                _JwtauthenticationOptions, 
-                impl.GetService<IDistributedCache>(),
-                _distributedCacheEntryOptions));
-
-            services.AddSingleton<ITokenRefresher>(impl => //
-                new JwtTokenRefresher(_JwtauthenticationOptions, impl.GetService<IAuthenticationManager>()));
+            services.AddJwtTokenRefresher(_JwtauthenticationOptions);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery)
