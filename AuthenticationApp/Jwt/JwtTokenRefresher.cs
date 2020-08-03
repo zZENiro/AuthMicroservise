@@ -1,4 +1,5 @@
 ﻿using AuthenticationApp.Jwt;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -37,9 +38,9 @@ namespace AuthenticationApp.Jwt
             if (!IsValidToken(validatedToken as JwtSecurityToken))
                 throw new SecurityTokenException("Invalid token passed!");
 
-            var loginClaim = principal.Claims.ToList().Where(claim => claim.Type == "Login").FirstOrDefault();
+            var userLogin = principal.Claims.ToList().Where(claim => claim.Type == "Login").FirstOrDefault().Value;
 
-            if (jwtRefreshCred.JwtRefreshToken != _JwtAuthenticationManager.UsersRefreshTokens[loginClaim.Value])
+            if (jwtRefreshCred.JwtRefreshToken != await _JwtAuthenticationManager.RefreshTokensDictionary.GetStringAsync(userLogin))
                 throw new SecurityTokenException("Invalid token passed!");
 
             return await _JwtAuthenticationManager.AuthenticateAsync(principal.Claims.ToList());

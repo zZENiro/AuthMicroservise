@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -133,7 +134,7 @@ namespace RedisSessionStoringExampleApp
             services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>();
             
             services.AddSingleton<IAuthenticationManager>(impl =>
-                new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), _JwtauthenticationOptions));
+                new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), _JwtauthenticationOptions, impl.GetService<IDistributedCache>()));
 
             services.AddSingleton<ITokenRefresher>(impl =>
                 new JwtTokenRefresher(_JwtauthenticationOptions, impl.GetService<IAuthenticationManager>()));

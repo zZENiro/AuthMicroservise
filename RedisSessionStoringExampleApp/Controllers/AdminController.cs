@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Redis;
 using Microsoft.IdentityModel.Tokens;
 using RedisSessionStoringExampleApp.Models;
 using RepositoriesApp;
@@ -99,16 +101,11 @@ namespace RedisSessionStoringExampleApp.Controllers
         {
             var resp = (JwtAuthenticationResponse)await _authentication.AuthenticateAsync(user);
 
-            _cache.SetStringAsync(resp.RefreshToken, resp.JwtToken, 
-                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365) });
-
-            HttpContext.Response.Cookies.Append("zZen.App.Token", resp.JwtToken, _authTokenCookieOptions);
-            HttpContext.Response.Cookies.Append("zZen.App.RefreshToken", resp.RefreshToken, _refreshTokenCookieOptions);
+            AddTokensToCache(resp);
 
             return RedirectToAction("Index");
         }
 
-        // TODO: Плодятся старые refreshToken-ы
         private async Task<IActionResult> UpdateToken(string refreshToken)
         {
             var jwtToken = await _cache.GetStringAsync(refreshToken);
@@ -117,13 +114,24 @@ namespace RedisSessionStoringExampleApp.Controllers
                 new JwtRefreshCred() { JwtToken = jwtToken, JwtRefreshToken = refreshToken }, 
                 _tokenValidationParameters);
 
-            _cache.SetStringAsync(resp.RefreshToken, resp.JwtToken,
-                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365) });
-
-            HttpContext.Response.Cookies.Append("zZen.App.Token", resp.JwtToken, _authTokenCookieOptions);
-            HttpContext.Response.Cookies.Append("zZen.App.RefreshToken", resp.RefreshToken, _refreshTokenCookieOptions);
+            UpdateCachedTokens(resp, refreshToken);
 
             return RedirectToAction("Index");
+        }
+
+        private void UpdateCachedTokens(JwtAuthenticationResponse response, string oldRefreshToken)
+        {
+            _cache.RemoveAsync(oldRefreshToken);
+            AddTokensToCache(response);
+        }
+
+        private void AddTokensToCache(JwtAuthenticationResponse response)
+        {
+            _cache.SetStringAsync(response.RefreshToken, response.JwtToken,
+                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365) });
+
+            HttpContext.Response.Cookies.Append("zZen.App.Token", response.JwtToken, _authTokenCookieOptions);
+            HttpContext.Response.Cookies.Append("zZen.App.RefreshToken", response.RefreshToken, _refreshTokenCookieOptions);
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,13 +17,16 @@ namespace AuthenticationApp.Jwt
         private readonly AuthenticationOptions _authOptions;
         private readonly IRefreshTokenGenerator _refreshTokenGenerator;
 
-        public IDictionary<string, string> UsersRefreshTokens { get; set; }
-
-        public JwtAuthenticationManager(IRefreshTokenGenerator refreshTokenGenerator, AuthenticationOptions options)
+        public IDistributedCache RefreshTokensDictionary { get; private set; }
+        
+        public JwtAuthenticationManager(
+            IRefreshTokenGenerator refreshTokenGenerator, 
+            AuthenticationOptions options,
+            IDistributedCache cache)
         {
+            RefreshTokensDictionary = cache;
             _authOptions = options;
             _refreshTokenGenerator = refreshTokenGenerator;
-            UsersRefreshTokens = new Dictionary<string, string>();
         }
 
         public async Task<IAuthenticationResponse> AuthenticateAsync(IIdentifications identifications) =>
@@ -44,8 +49,9 @@ namespace AuthenticationApp.Jwt
             {
                 var jwtToken = GenerateJwtTokenString(userClaims);
                 var newRefreshToken = _refreshTokenGenerator.GenerateRefreshTokenString();
+                var userLogin = userClaims.Where(claim => claim.Type == "Login").FirstOrDefault().Value;
 
-                UpdateUsersRefreshTokens(userClaims.Where(claim => claim.Type == "Login").FirstOrDefault().Value, newRefreshToken);
+                UpdateUsersRefreshTokens(userLogin, newRefreshToken);
 
                 return new JwtAuthenticationResponse()
                 {
@@ -56,10 +62,13 @@ namespace AuthenticationApp.Jwt
 
         private void UpdateUsersRefreshTokens(string login, string newRefreshToken)
         {
-            if (UsersRefreshTokens.ContainsKey(login))
-                UsersRefreshTokens[login] = newRefreshToken;
+            if (RefreshTokensDictionary.GetString(login) is null)
+                RefreshTokensDictionary.SetString(login, newRefreshToken);
             else
-                UsersRefreshTokens.Add(login, newRefreshToken);
+            {
+                RefreshTokensDictionary.Remove(login);
+                RefreshTokensDictionary.SetString(login, newRefreshToken);
+            }    
         }
 
         private string GenerateJwtTokenString(IIdentifications identifications)

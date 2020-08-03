@@ -1,5 +1,6 @@
 ﻿using AuthenticationApp.Jwt;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace AuthenticationApp
 {
     public interface IAuthenticationManager
     {
-        IDictionary<string, string> UsersRefreshTokens { get; set; }
+        IDistributedCache RefreshTokensDictionary { get; }
 
         Task<IAuthenticationResponse> AuthenticateAsync(IIdentifications identifications);
 
