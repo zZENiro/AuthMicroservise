@@ -32,6 +32,7 @@ namespace RedisSessionStoringExampleApp.Controllers
         private readonly IRefreshTokenGenerator _refreshTokenGenerator;
         private readonly ITokenRefresher _tokenRefresherer;
         private readonly IUsersRepository _repository;
+        private readonly DistributedCacheEntryOptions _distributedCacheEntryOptions;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly CookieOptions _authTokenCookieOptions;
         private readonly CookieOptions _refreshTokenCookieOptions;
@@ -44,7 +45,8 @@ namespace RedisSessionStoringExampleApp.Controllers
             ITokenRefresher tokenRefresherer,
             IUsersRepository repository,
             TokenValidationParameters tokenValidationParameters,
-            AuthenticationApp.AuthenticationOptions authenticationOptions)
+            AuthenticationApp.AuthenticationOptions authenticationOptions,
+            DistributedCacheEntryOptions distributedCacheEntryOptions)
         {
             _cache = cache;
             _authentication = authentication;
@@ -53,6 +55,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             _repository = repository;
             _tokenValidationParameters = tokenValidationParameters;
             _authenticationOptions = authenticationOptions;
+            _distributedCacheEntryOptions = distributedCacheEntryOptions;
 
             _authTokenCookieOptions = new CookieOptions()
             {
@@ -114,9 +117,13 @@ namespace RedisSessionStoringExampleApp.Controllers
         {
             var jwtToken = await _cache.GetStringAsync(refreshToken);
 
-            var resp = (JwtAuthenticationResponse)await _tokenRefresherer.Refresh(
-                new JwtRefreshCred() { JwtToken = jwtToken, JwtRefreshToken = refreshToken }, 
-                _tokenValidationParameters);
+            var resp = await _tokenRefresherer.Refresh(
+                new JwtRefreshCred()
+                {
+                    JwtToken = jwtToken,
+                    JwtRefreshToken = refreshToken
+                },
+                _tokenValidationParameters) as JwtAuthenticationResponse;
 
             UpdateCachedTokens(resp, refreshToken);
 
@@ -132,8 +139,7 @@ namespace RedisSessionStoringExampleApp.Controllers
 
         private void AddTokensToCache(JwtAuthenticationResponse response)
         {
-            _cache.SetStringAsync(response.RefreshToken, response.JwtToken,
-                new DistributedCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365) });
+            _cache.SetStringAsync(response.RefreshToken, response.JwtToken, _distributedCacheEntryOptions);
 
             HttpContext.Response.Cookies.Append("zZen.App.Token", response.JwtToken, _authTokenCookieOptions);
             HttpContext.Response.Cookies.Append("zZen.App.RefreshToken", response.RefreshToken, _refreshTokenCookieOptions);

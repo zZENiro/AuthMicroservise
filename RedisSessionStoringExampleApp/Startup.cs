@@ -31,6 +31,8 @@ namespace RedisSessionStoringExampleApp
 
         private AuthenticationOptions _JwtauthenticationOptions;
         private TokenValidationParameters _tokenValidationParameters;
+        private DistributedCacheEntryOptions _distributedCacheEntryOptions;
+        private UserDbContext _dbContext;
 
         public Startup(IConfiguration configuration)
         {
@@ -54,6 +56,13 @@ namespace RedisSessionStoringExampleApp
                 ValidAudience = _JwtauthenticationOptions.Audience,
                 ValidateLifetime = true,
             };
+
+            _distributedCacheEntryOptions = new DistributedCacheEntryOptions()
+            {
+                 AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365)
+            };
+
+            _dbContext = new UserDbContext(Configuration);
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -66,11 +75,8 @@ namespace RedisSessionStoringExampleApp
                     config.AllowAnyHeader().AllowCredentials().AllowAnyMethod();
                 }));
 
-            services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("defaultConn")));
-
             services.AddSingleton<IUsersRepository>(impl =>
-                new EFUserRepository(impl.GetService<UserDbContext>()));
+                new EFUserRepository(_dbContext));
 
             services.AddDistributedRedisCache(config =>
             {
@@ -127,16 +133,21 @@ namespace RedisSessionStoringExampleApp
                 });
             });
 
-            services.AddSingleton(typeof(AuthenticationOptions), _JwtauthenticationOptions);
+            services.AddSingleton(typeof(DistributedCacheEntryOptions), _distributedCacheEntryOptions); // cache setts
 
-            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters);
+            services.AddSingleton(typeof(AuthenticationOptions), _JwtauthenticationOptions); // jwt auth setts
 
-            services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>();
+            services.AddSingleton(typeof(TokenValidationParameters), _tokenValidationParameters); // jwt token validation setts
 
-            services.AddSingleton<IAuthenticationManager>(impl =>
-                new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), _JwtauthenticationOptions, impl.GetService<IDistributedCache>()));
+            services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>(); // jwt token
 
-            services.AddSingleton<ITokenRefresher>(impl =>
+            services.AddSingleton<IAuthenticationManager>(impl => //
+                new JwtAuthenticationManager(impl.GetService<IRefreshTokenGenerator>(), 
+                _JwtauthenticationOptions, 
+                impl.GetService<IDistributedCache>(),
+                _distributedCacheEntryOptions));
+
+            services.AddSingleton<ITokenRefresher>(impl => //
                 new JwtTokenRefresher(_JwtauthenticationOptions, impl.GetService<IAuthenticationManager>()));
         }
 
@@ -157,16 +168,15 @@ namespace RedisSessionStoringExampleApp
             app.UseAntiforgery(antiforgery);
 
             app.UseJwtAuthentication();
-            
-            app.UseStatusCodePages(async context =>
-            {
+
+            app.UseStatusCodePages(async context => {
                 var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
 
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
                     response.Redirect("/Admin/Login");
             });
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

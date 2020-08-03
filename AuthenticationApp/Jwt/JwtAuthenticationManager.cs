@@ -16,15 +16,18 @@ namespace AuthenticationApp.Jwt
     {
         private readonly AuthenticationOptions _authOptions;
         private readonly IRefreshTokenGenerator _refreshTokenGenerator;
+        private readonly DistributedCacheEntryOptions _distributedCacheEntryOptions;
 
         public IDistributedCache RefreshTokensDictionary { get; private set; }
         
         public JwtAuthenticationManager(
             IRefreshTokenGenerator refreshTokenGenerator, 
             AuthenticationOptions options,
-            IDistributedCache cache)
+            IDistributedCache cache,
+            DistributedCacheEntryOptions distributedCacheEntryOptions)
         {
             RefreshTokensDictionary = cache;
+            _distributedCacheEntryOptions = distributedCacheEntryOptions;
             _authOptions = options;
             _refreshTokenGenerator = refreshTokenGenerator;
         }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AuthenticationApp.Jwt
 {
-    public static class JwtAuthenticationHandler
+    public static class JwtAuthenticationExtenstions
     {
         public static IApplicationBuilder UseJwtAuthentication(this IApplicationBuilder builder) =>
             builder.Use(async (context, next) =>
