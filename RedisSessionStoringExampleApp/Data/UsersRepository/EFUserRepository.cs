@@ -1,7 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using AuthenticationApp;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RedisSessionStoringExampleApp.Models;
-using RepositoriesApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RedisSessionStoringExampleApp.Data.UsersRepository
 {
-    public class EFUserRepository : IRepository<User>
+    public class EFUserRepository : IUsersRepository
     {
         private readonly UserDbContext _context;
 
@@ -35,9 +35,9 @@ namespace RedisSessionStoringExampleApp.Data.UsersRepository
                               "WHERE Login = @login";
 
             await _context.Database.ExecuteSqlCommandAsync(updateQuery, new SqlParameter[] {
-                new SqlParameter("@login", destUser.Login),
-                new SqlParameter("@newLogin", newUser.Login),
-                new SqlParameter("@newPassword", (newUser.Password != destUser.Password) ? newUser.Password : destUser.Password)
+                new SqlParameter("@login", (destUser).Login),
+                new SqlParameter("@newLogin", (newUser).Login),
+                new SqlParameter("@newPassword", ((newUser).Password != (destUser).Password) ? (newUser).Password : (destUser).Password)
             });
         }
 

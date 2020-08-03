@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KmflzDTA5udgXe/hksl1mr1R49mOY/71T4T+sjWbBvnpnjgO1k9TuhAWKc/qgq/S0bJ1HeqhWsvMWWIT3U+TXg==",
+  "dgSpecHash": "aFeTuesHLjcHCpGop5r86+MldoC6TQZR4Npf0m/KUvC6fH0HRME1W2MiaiHomRTrSBBzjeTowy6gCaMvQMCCWQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\RedisSessionStoringExampleApp\\RedisSessionStoringExampleApp.csproj",
   "expectedPackageFiles": [

@@ -22,7 +22,6 @@ using Microsoft.IdentityModel.Tokens;
 using RedisSessionStoringExampleApp.Data;
 using RedisSessionStoringExampleApp.Data.UsersRepository;
 using RedisSessionStoringExampleApp.Models;
-using RepositoriesApp;
 
 namespace RedisSessionStoringExampleApp
 {
@@ -70,8 +69,8 @@ namespace RedisSessionStoringExampleApp
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("defaultConn")));
 
-            //services.AddSingleton<IRepository<User>>(impl =>
-            //    new EFUserRepository(impl.GetService<UserDbContext>()));
+            services.AddSingleton<IUsersRepository>(impl =>
+                new EFUserRepository(impl.GetService<UserDbContext>()));
 
             services.AddDistributedRedisCache(config =>
             {

@@ -67,9 +67,7 @@ C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExample
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.0\System.Runtime.Caching.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\AuthenticationApp.dll
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\RepositoriesApp.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\AuthenticationApp.pdb
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\RepositoriesApp.pdb
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\RedisSessionStoringExampleApp\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll

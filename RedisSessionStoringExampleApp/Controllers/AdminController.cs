@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.IdentityModel.Tokens;
+using RedisSessionStoringExampleApp.Data.UsersRepository;
 using RedisSessionStoringExampleApp.Models;
-using RepositoriesApp;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -31,7 +31,7 @@ namespace RedisSessionStoringExampleApp.Controllers
         private readonly IAuthenticationManager _authentication;
         private readonly IRefreshTokenGenerator _refreshTokenGenerator;
         private readonly ITokenRefresher _tokenRefresherer;
-        private readonly IRepository<User> _repository;
+        private readonly IUsersRepository _repository;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly CookieOptions _authTokenCookieOptions;
         private readonly CookieOptions _refreshTokenCookieOptions;
@@ -42,7 +42,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             IAuthenticationManager authentication,
             IRefreshTokenGenerator refreshTokenGenerator,
             ITokenRefresher tokenRefresherer,
-            //IRepository<User> repository,
+            IUsersRepository repository,
             TokenValidationParameters tokenValidationParameters,
             AuthenticationApp.AuthenticationOptions authenticationOptions)
         {
@@ -50,7 +50,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             _authentication = authentication;
             _refreshTokenGenerator = refreshTokenGenerator;
             _tokenRefresherer = tokenRefresherer;
-            //_repository = repository;
+            _repository = repository;
             _tokenValidationParameters = tokenValidationParameters;
             _authenticationOptions = authenticationOptions;
 
@@ -99,6 +99,10 @@ namespace RedisSessionStoringExampleApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(User user)
         {
+            var requireUser = await _repository.GetOneAsync(user.Login);
+            if (requireUser is null)
+                return Unauthorized();
+
             var resp = (JwtAuthenticationResponse)await _authentication.AuthenticateAsync(user);
 
             AddTokensToCache(resp);
@@ -118,6 +122,7 @@ namespace RedisSessionStoringExampleApp.Controllers
 
             return RedirectToAction("Index");
         }
+
 
         private void UpdateCachedTokens(JwtAuthenticationResponse response, string oldRefreshToken)
         {

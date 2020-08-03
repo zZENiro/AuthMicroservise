@@ -33,7 +33,6 @@
           "Microsoft.EntityFrameworkCore.Tools": "3.1.6",
           "Microsoft.Extensions.Caching.Redis": "2.2.0",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.10.9",
-          "RepositoriesApp": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "6.7.1",
           "Microsoft.AspNetCore.Antiforgery": "3.1.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.1.0.0",
@@ -1873,14 +1872,6 @@
         },
         "compile": {
           "AuthenticationApp.dll": {}
-        }
-      },
-      "RepositoriesApp/1.0.0": {
-        "runtime": {
-          "RepositoriesApp.dll": {}
-        },
-        "compile": {
-          "RepositoriesApp.dll": {}
         }
       },
       "Microsoft.AspNetCore.Antiforgery/3.1.0.0": {
@@ -4528,11 +4519,6 @@
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
     "AuthenticationApp/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "RepositoriesApp/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
