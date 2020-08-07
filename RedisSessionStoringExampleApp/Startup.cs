@@ -59,7 +59,7 @@ namespace RedisSessionStoringExampleApp
 
             _distributedCacheEntryOptions = new DistributedCacheEntryOptions()
             {
-                 AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365)
             };
 
             _dbContext = new UserDbContext(Configuration);
@@ -93,9 +93,15 @@ namespace RedisSessionStoringExampleApp
 
             services.AddAntiforgery(config =>
             {
-                config.Cookie.Name = "zZen.AntiforgeryCookies";
-                config.Cookie.HttpOnly = true;
-                config.Cookie.SameSite = SameSiteMode.Strict;
+                config.Cookie = new CookieBuilder()
+                {
+                    Path = "/",
+                    Domain = "localhost",
+                    HttpOnly = true,
+                    Name = "zZen.Tokens.Antiforgery",
+                    SameSite = SameSiteMode.Strict,
+                    Expiration = TimeSpan.FromMinutes(60)
+                };
 
                 config.FormFieldName = "AntiforgeryField";
                 config.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
@@ -158,18 +164,20 @@ namespace RedisSessionStoringExampleApp
             app.UseRouting();
             app.UseCors("SecureCors");
 
-            app.UseAntiforgery(antiforgery);
+            // angular
+            //app.UseAntiforgery(antiforgery);
 
             app.UseJwtAuthentication();
 
-            app.UseStatusCodePages(async context => {
+            app.UseStatusCodePages(async context =>
+            {
                 var request = context.HttpContext.Request;
                 var response = context.HttpContext.Response;
 
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
                     response.Redirect("/Admin/Login");
             });
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 

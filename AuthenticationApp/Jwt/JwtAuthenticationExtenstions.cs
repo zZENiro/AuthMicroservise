@@ -18,6 +18,10 @@ namespace AuthenticationApp.Jwt
                 if (!string.IsNullOrEmpty(jwtToken) && !string.IsNullOrEmpty(refreshToken))
                     context.Request.Headers.Add(HeaderNames.Authorization, "Bearer " + jwtToken);
 
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("X-Xss-Protection", "1");
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
+
                 await next.Invoke();
             });
     }
