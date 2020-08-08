@@ -29,7 +29,6 @@ namespace RedisSessionStoringExampleApp
     {
         public IConfiguration Configuration { get; set; }
 
-        private AuthenticationOptions _JwtauthenticationOptions;
         private TokenValidationParameters _tokenValidationParameters;
         private DistributedCacheEntryOptions _distributedCacheEntryOptions;
         private UserDbContext _dbContext;
@@ -38,22 +37,15 @@ namespace RedisSessionStoringExampleApp
         {
             Configuration = configuration;
 
-            _JwtauthenticationOptions = new AuthenticationOptions()
-            {
-                Issuer = "zZen.Server",
-                Audience = "zZen.Client",
-                Lifetime = 1, // min
-                Key = Configuration.GetValue<string>("SecretKey")
-            };
-
             _tokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_JwtauthenticationOptions.Key)),
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.ASCII.GetBytes(Configuration.GetValue<string>("authOptions:Key"))),
                 ValidateIssuer = true,
-                ValidIssuer = _JwtauthenticationOptions.Issuer,
+                ValidIssuer = Configuration.GetValue<string>("authOptions:Issuer"),
                 ValidateAudience = true,
-                ValidAudience = _JwtauthenticationOptions.Audience,
+                ValidAudience = Configuration.GetValue<string>("authOptions:Audience"),
                 ValidateLifetime = true,
             };
 
@@ -68,6 +60,9 @@ namespace RedisSessionStoringExampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // TOOD: make configuring Auth options by json
+            services.AddOptions<AuthenticationOptions>("authOptions");
 
             services.AddCors(setup =>
                 setup.AddPolicy("SecureCors", config =>
@@ -125,7 +120,7 @@ namespace RedisSessionStoringExampleApp
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.RequireHttpsMetadata = true;
-                    options.Audience = _JwtauthenticationOptions.Audience;
+                    options.Audience = Configuration.GetValue<string>("authOptions:Audience");
                     options.SaveToken = true;
                     options.TokenValidationParameters = _tokenValidationParameters;
                 });
@@ -139,15 +134,14 @@ namespace RedisSessionStoringExampleApp
                 });
             });
 
-            services.AddAuthenticationOptions(_JwtauthenticationOptions);
-
+            // TODO: make configuring valid from json
             services.AddTokenValidation(_tokenValidationParameters);
 
             services.AddJwtRefreshTokenGenerator();
 
-            services.AddJwtAuthenticationManager(_JwtauthenticationOptions, _distributedCacheEntryOptions);
+            services.AddJwtAuthenticationManager(_distributedCacheEntryOptions);
 
-            services.AddJwtTokenRefresher(_JwtauthenticationOptions);
+            services.AddJwtTokenRefresher();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAntiforgery antiforgery)

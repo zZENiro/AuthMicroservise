@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wbCejoPPaFU+YBPdE6RG83m9Lx5zbkG72jPdV3oBgbzehEDUVP1U6ERkDxPguU3OZVe5riL2YOph8FSfuw+f7Q==",
+  "dgSpecHash": "JLWmiJEiTJnf3WZViRzki2b2duXlRHz3rkKobFgCt7TkRF9EAMNPR9nWWjfIvoSnk68iiad98puskF3TxYWI9w==",
   "success": true,
   "projectFilePath": "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\AuthenticationApp\\AuthenticationApp.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\3.1.6\\microsoft.extensions.caching.abstractions.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.6\\microsoft.extensions.dependencyinjection.abstractions.3.1.6.nupkg.sha512",
+    "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.options\\3.1.6\\microsoft.extensions.options.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.6\\microsoft.extensions.primitives.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.7.1\\microsoft.identitymodel.jsonwebtokens.6.7.1.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.identitymodel.logging\\6.7.1\\microsoft.identitymodel.logging.6.7.1.nupkg.sha512",

@@ -11,18 +11,18 @@ namespace AuthenticationApp.Jwt
         public static IServiceCollection AddJwtRefreshTokenGenerator(this IServiceCollection services) =>
             services.AddSingleton<IRefreshTokenGenerator, JwtRefreshTokenGenerator>();
 
-        public static IServiceCollection AddJwtAuthenticationManager(this IServiceCollection services, AuthenticationOptions authOptions, DistributedCacheEntryOptions distributedCacheEntryOptions) =>
+        public static IServiceCollection AddJwtAuthenticationManager(this IServiceCollection services, DistributedCacheEntryOptions distributedCacheEntryOptions) =>
             services.AddSingleton<IAuthenticationManager>(impl =>
             new JwtAuthenticationManager(
                 impl.GetService<IRefreshTokenGenerator>(),
-                authOptions,
+                impl.GetService<AuthenticationOptions>(),
                 impl.GetService<IDistributedCache>(),
                 distributedCacheEntryOptions));
 
-        public static IServiceCollection AddJwtTokenRefresher(this IServiceCollection services, AuthenticationOptions authenticationOptions) =>
+        public static IServiceCollection AddJwtTokenRefresher(this IServiceCollection services) =>
             services.AddSingleton<ITokenRefresher>(impl =>
             new JwtTokenRefresher(
-                authenticationOptions, 
+                impl.GetService<AuthenticationOptions>(), 
                 impl.GetService<IAuthenticationManager>()));
     }
 }

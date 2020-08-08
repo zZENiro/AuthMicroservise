@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[3.1.6, )"
             },
+            "Microsoft.Extensions.Options": {
+              "target": "Package",
+              "version": "[3.1.6, )"
+            },
             "Microsoft.Net.Http.Headers": {
               "target": "Package",
               "version": "[2.2.8, )"

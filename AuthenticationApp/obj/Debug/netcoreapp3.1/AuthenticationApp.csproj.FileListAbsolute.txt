@@ -6,4 +6,3 @@ C:\Users\zZEN\source\repos\RedisSessionStoringExample\AuthenticationApp\bin\Debu
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\AuthenticationApp\bin\Debug\netcoreapp3.1\AuthenticationApp.pdb
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\AuthenticationApp\obj\Debug\netcoreapp3.1\AuthenticationApp.dll
 C:\Users\zZEN\source\repos\RedisSessionStoringExample\AuthenticationApp\obj\Debug\netcoreapp3.1\AuthenticationApp.pdb
-C:\Users\zZEN\source\repos\RedisSessionStoringExample\AuthenticationApp\obj\Debug\netcoreapp3.1\AuthenticationApp.csproj.CoreCompileInputs.cache
