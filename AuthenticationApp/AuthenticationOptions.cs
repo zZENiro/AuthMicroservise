@@ -6,8 +6,10 @@ using System.Text;
 
 namespace AuthenticationApp
 {
-    public class AuthenticationOptions : IOptions
+    public class AuthenticationOptions
     {
+        public const string Authentication = "Authentication";
+
         public string Issuer { get; set; }
 
         public string Audience { get; set; }

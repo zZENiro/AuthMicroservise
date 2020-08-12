@@ -1,5 +1,6 @@
 ﻿using AuthenticationApp.Jwt;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,14 +12,11 @@ namespace AuthenticationApp.Jwt
 {
     public class JwtTokenRefresher : ITokenRefresher
     {
-        private readonly AuthenticationOptions _authenticationOptions;
         private readonly IAuthenticationManager _JwtAuthenticationManager;
 
         public JwtTokenRefresher(
-            AuthenticationOptions authenticationOptions,
             IAuthenticationManager jWTAuthenticationManager)
         {
-            _authenticationOptions = authenticationOptions;
             _JwtAuthenticationManager = jWTAuthenticationManager;
         }
 

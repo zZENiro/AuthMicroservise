@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RedisSessionStoringExampleApp.Data.UsersRepository;
 using RedisSessionStoringExampleApp.Models;
@@ -45,7 +46,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             ITokenRefresher tokenRefresherer,
             IUsersRepository repository,
             TokenValidationParameters tokenValidationParameters,
-            AuthenticationApp.AuthenticationOptions authenticationOptions,
+            IOptions<AuthenticationApp.AuthenticationOptions> authenticationOptions,
             DistributedCacheEntryOptions distributedCacheEntryOptions)
         {
             _cache = cache;
@@ -54,7 +55,7 @@ namespace RedisSessionStoringExampleApp.Controllers
             _tokenRefresherer = tokenRefresherer;
             _repository = repository;
             _tokenValidationParameters = tokenValidationParameters;
-            _authenticationOptions = authenticationOptions;
+            _authenticationOptions = authenticationOptions.Value;
             _distributedCacheEntryOptions = distributedCacheEntryOptions;
 
             _authTokenCookieOptions = new CookieOptions()

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "JLWmiJEiTJnf3WZViRzki2b2duXlRHz3rkKobFgCt7TkRF9EAMNPR9nWWjfIvoSnk68iiad98puskF3TxYWI9w==",
+  "dgSpecHash": "dCrlNwIlteZJJp7/fEEpYX0zJlCksFUU2JBGKchfivRg9UXTho48M5/whGBJYNVNecg0/UHU0oFfuXDNKlsLPw==",
   "success": true,
   "projectFilePath": "C:\\Users\\zZEN\\source\\repos\\RedisSessionStoringExample\\AuthenticationApp\\AuthenticationApp.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\3.1.6\\microsoft.extensions.caching.abstractions.3.1.6.nupkg.sha512",
+    "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.1.6\\microsoft.extensions.configuration.abstractions.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\3.1.6\\microsoft.extensions.dependencyinjection.abstractions.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.options\\3.1.6\\microsoft.extensions.options.3.1.6.nupkg.sha512",
     "C:\\Users\\zZEN\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.6\\microsoft.extensions.primitives.3.1.6.nupkg.sha512",

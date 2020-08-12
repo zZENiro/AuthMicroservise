@@ -71,11 +71,11 @@ namespace AuthenticationApp.Jwt
         private void UpdateRefreshToken(string login, string newRefreshToken)
         {
             if (RefreshTokensDictionary.GetString(login) is null)
-                RefreshTokensDictionary.SetString(login, newRefreshToken);
+                RefreshTokensDictionary.SetString(login, newRefreshToken, _distributedCacheEntryOptions);
             else
             {
                 RefreshTokensDictionary.Remove(login);
-                RefreshTokensDictionary.SetString(login, newRefreshToken);
+                RefreshTokensDictionary.SetString(login, newRefreshToken, _distributedCacheEntryOptions);
             }
         }
 
@@ -84,7 +84,7 @@ namespace AuthenticationApp.Jwt
             var securityToken = new JwtSecurityToken(
                 issuer: _authOptions.Value.Issuer,
                 audience: _authOptions.Value.Audience,
-                claims: /*userClaimsIdentity.Claims*/ userClaims,
+                claims: userClaims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddMinutes(_authOptions.Value.Lifetime),
                 signingCredentials: new SigningCredentials(

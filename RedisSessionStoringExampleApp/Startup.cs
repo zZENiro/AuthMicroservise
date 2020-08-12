@@ -41,17 +41,18 @@ namespace RedisSessionStoringExampleApp
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.ASCII.GetBytes(Configuration.GetValue<string>("authOptions:Key"))),
+                    Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Authentication:Key"))),
                 ValidateIssuer = true,
-                ValidIssuer = Configuration.GetValue<string>("authOptions:Issuer"),
+                ValidIssuer = Configuration.GetValue<string>("Authentication:Issuer"),
                 ValidateAudience = true,
-                ValidAudience = Configuration.GetValue<string>("authOptions:Audience"),
+                ValidAudience = Configuration.GetValue<string>("Authentication:Audience"),
                 ValidateLifetime = true,
             };
 
             _distributedCacheEntryOptions = new DistributedCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(365)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(
+                    Configuration.GetValue<int>("DistributedCacheEntryOptions:AbsoluteExpirationRelativeToNow"))
             };
 
             _dbContext = new UserDbContext(Configuration);
@@ -62,7 +63,9 @@ namespace RedisSessionStoringExampleApp
             services.AddMvc();
 
             // TOOD: make configuring Auth options by json
-            services.AddOptions<AuthenticationOptions>("authOptions");
+            services.Configure<AuthenticationOptions>(Configuration.GetSection(AuthenticationOptions.Authentication));
+            services.Configure<TokenValidationOptions>(Configuration.GetSection(TokenValidationOptions.TokenValidationOption));
+            services.Configure<DistributedCacheEntryOptions>(Configuration.GetSection("DistributedCacheEntryOptions"));
 
             services.AddCors(setup =>
                 setup.AddPolicy("SecureCors", config =>
@@ -120,7 +123,7 @@ namespace RedisSessionStoringExampleApp
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.RequireHttpsMetadata = true;
-                    options.Audience = Configuration.GetValue<string>("authOptions:Audience");
+                    options.Audience = Configuration.GetValue<string>("Authentication:Audience");
                     options.SaveToken = true;
                     options.TokenValidationParameters = _tokenValidationParameters;
                 });
@@ -134,12 +137,13 @@ namespace RedisSessionStoringExampleApp
                 });
             });
 
+            //
             // TODO: make configuring valid from json
             services.AddTokenValidation(_tokenValidationParameters);
 
             services.AddJwtRefreshTokenGenerator();
 
-            services.AddJwtAuthenticationManager(_distributedCacheEntryOptions);
+            services.AddJwtAuthenticationManager();
 
             services.AddJwtTokenRefresher();
         }
